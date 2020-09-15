@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>What's your Issue?</title>
+{% endblock %}
+
+
+{% block body %}
+<div class="content">
+    <h3>Profile: {{username}}</h3>
+    <h3>Name: {{Name}}</h3>
+    <br><hr><br>
+    <div class="form">
+        <form action="{{url_for('addissue')}}" method="POST">
+            <input type="text" name="title" id="title">
+            <input type="text" name="description" id="description">
+            <input type="text" name="gitlink" id="gitlink">
+
+            <select name="state" id="state">
+              <option value="Open">Open</option>
+              <option value="Assigned">Assigned</option>
+              <option value="Fixed">Fixed</option>
+              <option value="Abandoned">Abandoned</option>
+            </select>
+
+
+            <select name="tags" id="tags" multiple>
+            	<option value="Good First Issue">Good First Issue</option>
+            	<option value="Dependies">Dependies</option>
+            	<option value="Enhancement">Enhancement</option>
+            	<option value="Bug">Bug</option>
+            	<option value="Goals">Goals</option>
+            	<option value="Javascript">Javascript</option>
+            	<option value="New">New</option>
+
+            <input type="submit" value="Add issue">
+        </form>
+    </div>
+</div>
+{% endblock %}

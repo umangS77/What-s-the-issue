@@ -33,8 +33,9 @@ class ISSUES(db.Model):
     def __repr__(self):
         return '<Issue %r>' % self.id
 
+# currentuser = cas.username
 
-@app.route('/', methods=['GET'])
+@app.route('/', methods=['GET','POST'])
 @login_required
 
 def route_root():
@@ -47,27 +48,29 @@ def route_root():
 	)
 
 
-@app.route('/addissue', methods=['POST'])
+@app.route('/addissue', methods=['GET','POST'])
 def addissue():
-    issue_title = request.form['title']
-    issue_description = request.form['description']
-    issue_state = request.form['state']
-    issue_tags = request.form['tags']
-    issue_gitlink = request.form['gitlink']
-    issue_owner = cas.username
+
+    if request.method == 'POST':
+        issue_title = request.form['title']
+        issue_description = request.form['description']
+        issue_state = request.form['state']
+        issue_tags = request.form['tags']
+        issue_gitlink = request.form['gitlink']
+        issue_owner = cas.username
     # issue_assignees = request.form['assignees']
-    new_issue = ISSUES(title=issue_title, description=issue_description, state=issue_state, tags=issue_tags,gitlink=issue_gitlink, owner = issue_owner)
+        new_issue = ISSUES(title=issue_title, description=issue_description, state=issue_state, tags=issue_tags,gitlink=issue_gitlink, owner = issue_owner)
 
-    # try:
-    db.session.add(new_issue)
-    db.session.commit()
-    return redirect('/')
-    # except:
-    #     return 'There was an issue adding your issue'
+        try:
+            db.session.add(new_issue)
+            db.session.commit()
+            return redirect('/')
+        except:
+            return 'There was an issue adding your issue'
 
-    # else:
-    #     issues = ISSUES.query.order_by(ISSUES.date_created).all()
-    #     return render_template('index.html', issues=issues) 
+    else:
+        return render_template('/addissue.html',username = cas.username,
+        Name = cas.attributes['cas:Name'])
 
 if __name__ == "__main__":
     app.run(debug=True)

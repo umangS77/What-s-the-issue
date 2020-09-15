@@ -9,22 +9,27 @@
 <div class="content">
     <h3>Profile: {{username}}</h3>
     <h3>Name: {{Name}}</h3>
-    <br><hr><br>
+    <br>
+    <a href="{{ url_for('addissue') }}"><button type="button" style="background-color: yellow">Add new issue?</button></a>
+    <hr><br>
+<!--     <p>{{url_for('addissue')}}</p> -->
+    <br><hr>
     <h1 style="text-align: center">Issues: </h1>
     {% if issues|length < 1 %}
-    <h4 style="text-align: center">There are no issues. Create one below!</h4>
+    <h4 style="text-align: center">There are no issues. Create one!</h4>
     {% else %}
         {% for issue in issues %}
-            <p class="title">{{issue.title}}</p>
-            <p class="description">{{issue.description}}</p>
-            <p class="gitlink">{{issue.gitlink}}</p>
-            <p class="state">{{issue.state}}</p>
-            <p class="tags">{{issue.tags}}</p>
-            <p class="date">{{issue.date_created.date()}}</p>
+            <p class="title">Title: {{issue.title}}</p>
+            <p class="description">Description: {{issue.description}}</p>
+            <p class="gitlink">Git-link: {{issue.gitlink}}</p>
+            <p class="state">State: {{issue.state}}</p>
+            <p class="tags">Tags: {{issue.tags}}</p>
+            <p class="date">Date created: {{issue.date_created.date()}}</p>
+            <br>
         {% endfor %}
     {% endif %}
 
-    <div class="form">
+<!--     <div class="form">
         <form action="/addissue" method="POST">
             <input type="text" name="title" id="title">
             <input type="text" name="description" id="description">
@@ -33,6 +38,6 @@
             <input type="text" name="tags" id="tags">
             <input type="submit" value="Add issue">
         </form>
-    </div>
+    </div> -->
 </div>
 {% endblock %}
