@@ -10,7 +10,8 @@
     <h3>Profile: {{username}}</h3>
     <h3>Name: {{Name}}</h3>
     <a href = "{{url_for('homepage')}}">Go to homepage</a>
-    <br><hr><br>
+    <br><a href = "{{url_for('logoutpage')}}">Logout</a><br>
+    <hr><br>
     <div class="form">
         <form action="{{url_for('addissue')}}" method="POST">
             <input type="text" name="title" id="title">

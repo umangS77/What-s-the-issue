@@ -1,5 +1,5 @@
+import flask
 from flask import Flask, current_app, render_template, url_for, request, redirect, flash , session
-from sqlalchemy.dialects.postgresql import ARRAY
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 # from models import db, ISSUES, USERS
@@ -10,8 +10,8 @@ from flask_cas import login_required
 import os
 from pprint import pprint
 
-app = Flask(__name__)
 
+app = Flask(__name__)
 app.secret_key = os.urandom(24)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 # app.config['SQLALCHEMY_BINDS'] = {'usersdb' : 'sqlite:///usersdb.db'}
@@ -20,10 +20,10 @@ db = SQLAlchemy(app)
 db.init_app(app)
 
 app.config['CAS_SERVER'] = 'https://login.iiit.ac.in'
-app.config['CAS_AFTER_LOGIN'] = '/'
+app.config['CAS_AFTER_LOGIN'] = 'loginpage'
+app.config['CAS_AFTER_LOGOUT'] = '/'
 cas = CAS(app, '/cas')
-# with app.app_context():
-#     print (current_app.name)
+
 
 class ISSUES(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
@@ -39,6 +39,7 @@ class ISSUES(db.Model):
 	def __repr__(self):
 		return '<Issue %r>' % self.id
 
+
 class USERS(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	username = 'aa'
@@ -48,10 +49,11 @@ class USERS(db.Model):
 	def __repr__(self):
 	 return '<User %r>' % self.id
 
-# currentuser = cas.username
-
 @app.route('/')
-@login_required
+def login():
+    return flask.redirect(flask.url_for('cas.login', _external=True))
+
+@app.route('/loginpage')
 def loginpage():
 	# global current_owner
 	# global current_name 
@@ -181,5 +183,12 @@ def delete(id):
         return redirect('/myissues')
     except:
         return 'There was a problem deleting that issue'
+
+@app.route('/logout')
+def logoutpage():
+	session.pop("user",None)
+	session.pop("Name",None)
+	return flask.redirect(flask.url_for('cas.logout', _external=True))
+
 if __name__ == "__main__":
 	app.run(debug=True)

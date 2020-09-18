@@ -8,6 +8,8 @@
 <div class="content">
     <h3>Profile: {{username}}</h3>
     <h3>Name: {{Name}}</h3>
+    <a href = "{{url_for('homepage')}}">Go to homepage</a><br>
+    <a href = "{{url_for('logoutpage')}}">Logout</a>
     <br><hr><br>
     <h1 style="text-align: center">My Issues: </h1>
     {% if myissues|length < 1 %}
