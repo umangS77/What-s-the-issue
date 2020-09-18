@@ -9,6 +9,7 @@
 <div class="content">
     <h3>Profile: {{username}}</h3>
     <h3>Name: {{Name}}</h3>
+    <h3>Role: {{Role}}</h3>
     <a href = "{{url_for('homepage')}}">Go to homepage</a>
     <br><a href = "{{url_for('logoutpage')}}">Logout</a><br>
     <hr><br>
@@ -18,7 +19,7 @@
             <input type="text" name="description" id="description">
             <input type="text" name="gitlink" id="gitlink">
 
-            <select name="state" id="state">
+            <select name="state" id="state" value="Open">
               <option value="Open">Open</option>
               <option value="Assigned">Assigned</option>
               <option value="Fixed">Fixed</option>

@@ -42,8 +42,8 @@ class ISSUES(db.Model):
 
 class USERS(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
-	username = 'aa'
-	Name = 'aa'
+	username = db.Column(db.String(100), nullable=True)
+	Name = db.Column(db.String(100), nullable=True)
 	role = db.Column(db.String(50), nullable=True)
 
 	def __repr__(self):
@@ -55,75 +55,75 @@ def login():
 
 @app.route('/loginpage')
 def loginpage():
-	# global current_owner
-	# global current_name 
-	# current_owner = cas.username
-	# current_name = cas.attributes['cas:Name']
 	session["username"] = cas.username
 	session["Name"] = cas.attributes['cas:Name']
-	user = USERS.query.filter_by(username = session["username"]).all()
-	if(user == None):
-		# new_user = USERS(username = current_owner, Name=current_name, Role='VIEWER')
-		# try:
-		# 	db.session.add(new_user)
-		# 	db.session.commit()
-		# except:
-		# 	return 'Error is adding user'
-		pass
-	# session["role"] = user.role
+	current_owner = session["username"]
+	current_name = session["Name"]
+	isuser = USERS.query.filter_by(username = current_owner).first()
+	if(isuser == None):
+		new_user = USERS(username = current_owner,
+			Name=current_name,
+			role='VIEWER')
+		session["role"] = 'VIEWER'
+		try:
+			db.session.add(new_user)
+			db.session.commit()
+		except:
+			return 'Error is adding user'
+	else:
+		session["role"] = isuser.role
 	return redirect('/homepage')
 
 
 @app.route('/homepage', methods = ['GET','POST'])
 def homepage():
-	# if "user" in session:
 	current_owner = session["username"]
 	current_name = session["Name"]
+	current_role = session["role"]
 	issues = ISSUES.query.order_by(ISSUES.date_created).all()
 	user = USERS.query.filter_by(username = current_owner).all()
 	return render_template('/homepage.html',
 		username = current_owner,
 		Name = current_name,
-		# role = user.role, 
+		Role = current_role,
 		issues = issues)
-	# else:
-	# 	return redirect('/')
+
 
 @app.route('/myissues')
 def myissues():
-	# if "user" in session:
 	current_owner = session["username"]
 	current_name = session["Name"]
+	current_role = session["role"]
 	user = USERS.query.filter_by(username = current_owner).all()
 	myissues = ISSUES.query.filter_by(owner = current_owner).all()
-	# x=dir().count('current_owner')
-	# if(x==0):
-	# 	return redirect('/')
-	return render_template('/myissues.html',username = current_owner,
+	return render_template('/myissues.html',
+		username = current_owner,
 		Name = current_name,
-		# role = user.role,
+		Role = current_role,
 		myissues = myissues)
-	# else:
-	# 	return redirect('/')
+
 
 @app.route('/addissue', methods=['GET','POST'])
 def addissue():
-	# if "user" in session:
 	current_owner = session["username"]
 	current_name = session["Name"]
+	current_role = session["role"]
 	user = USERS.query.filter_by(username = current_owner).all()
+
 	if request.method == 'POST':
 		issue_title = request.form['title']
 		issue_description = request.form['description']
 		issue_state = request.form['state']
 		issue_tag_list = request.form.getlist('tags')
 		issue_tags=','.join(issue_tag_list)
-		# for tag in issue_tag_list:
-		# 	issue_tags = issue_tags + "," + tag
 		issue_gitlink = request.form['gitlink']
 		issue_owner = current_owner
-	# issue_assignees = request.form['assignees']
-		new_issue = ISSUES(title=issue_title, description=issue_description, state=issue_state, tags=issue_tags,gitlink=issue_gitlink, owner = issue_owner)
+		new_issue = ISSUES(title=issue_title, 
+			description=issue_description, 
+			state=issue_state, 
+			tags=issue_tags,
+			gitlink=issue_gitlink, 
+			owner = issue_owner)
 
 		try:
 			db.session.add(new_issue)
@@ -136,26 +136,23 @@ def addissue():
 		return render_template('/addissue.html',
 		username = current_owner,
 		Name = current_name,
-		# role = user.role,
+		Role = current_role,
 		)
-	# else:
-	# 	return redirect('/')
 
 @app.route('/update/<int:id>', methods = ['GET','POST'])
 def update(id):
-	# if "user" in session:
 	current_owner = session["username"]
 	current_name = session["Name"]
+	current_role = session["role"]
 	user = USERS.query.filter_by(username = current_owner).all()
 	issue = ISSUES.query.get_or_404(id)
+
 	if request.method == 'POST':
 		issue.title = request.form['title']
 		issue.description = request.form['description']
 		issue.state = request.form['state']
 		issue_tag_list = request.form.getlist('tags')
 		issue_tags=','.join(issue_tag_list)
-		# for tag in issue_tag_list:
-		# 	issue_tags = issue_tags + "," + tag
 		issue.gitlink = request.form['gitlink']
 		issue.owner = current_owner
 
@@ -168,10 +165,9 @@ def update(id):
 	else:
 		return render_template('update.html',username = current_owner,
 		Name = current_name,
-		# role = user.role,
+		Role = current_role,
 		issue = issue)
-	# else:
-	# 	return redirect('/')
+
 
 @app.route('/delete/<int:id>')
 def delete(id):
@@ -184,10 +180,19 @@ def delete(id):
     except:
         return 'There was a problem deleting that issue'
 
+@app.route('/displayusers')
+def displayusers():
+	allusers = USERS.query.order_by(USERS.username).all()
+	return render_template('displayusers.html',username = session["username"],
+		Name = session["Name"],
+		Role = session["role"],
+		users = allusers)
+
 @app.route('/logout')
 def logoutpage():
 	session.pop("user",None)
 	session.pop("Name",None)
+	session.pop("role",None)
 	return flask.redirect(flask.url_for('cas.logout', _external=True))
 
 if __name__ == "__main__":

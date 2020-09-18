@@ -9,12 +9,13 @@
 <div class="content">
     <h3>Profile: {{username}}</h3>
     <h3>Name: {{Name}}</h3>
-    <a href = "{{url_for('homepage')}}">Go to homepage</a>
+    <h3>Role: {{Role}}</h3>
+    <a href = "{{url_for('displayusers')}}">Show all users</a>
     <br>
     <a href = "{{url_for('logoutpage')}}">Logout</a>
     <br>
     <a href="{{ url_for('addissue') }}"><button type="button" style="background-color: yellow">Add new issue?</button></a><br>
-    <a href="{{ url_for('myissues') }}"><button type="button" style="background-color: green">See you issue?</button></a>
+    <a href="{{ url_for('myissues') }}"><button type="button" style="background-color: green">See your issue?</button></a>
     <hr><br>
 <!--     <p>{{url_for('addissue')}}</p> -->
     <br><hr>

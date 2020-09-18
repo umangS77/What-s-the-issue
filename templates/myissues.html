@@ -8,13 +8,14 @@
 <div class="content">
     <h3>Profile: {{username}}</h3>
     <h3>Name: {{Name}}</h3>
+    <h3>Role: {{Role}}</h3>
     <a href = "{{url_for('homepage')}}">Go to homepage</a><br>
     <a href = "{{url_for('logoutpage')}}">Logout</a>
     <br><hr><br>
     <h1 style="text-align: center">My Issues: </h1>
     {% if myissues|length < 1 %}
     <h4 style="text-align: center">You have  no issues. Create one!</h4>
-    <a href="{{ url_for('addissue') }}"><button style="background-color: green">Edit this issue</button></a>
+    <a href="{{ url_for('addissue') }}"><button style="background-color: yellow">Create an issue</button></a>
     {% else %}
         {% for issue in myissues %}
             <p class="title">Title: {{issue.title}}</p>

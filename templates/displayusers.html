@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>All users</title>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h3>Profile: {{username}}</h3>
+    <h3>Name: {{Name}}</h3>
+    <h3>Role: {{Role}}</h3>
+    <a href = "{{url_for('homepage')}}">Go to homepage</a>
+    <br>
+    <a href = "{{url_for('logoutpage')}}">Logout</a>
+    <br>
+
+    <a href="{{ url_for('addissue') }}"><button type="button" style="background-color: yellow">Add new issue?</button></a><br>
+<!--     <a href="{{ url_for('myissues') }}"><button type="button" style="background-color: green">See your issue?</button></a>
+ -->    <hr><br>
+    <h1 style="text-align: center">Users: </h1>
+    {% if users|length < 1 %}
+    <h4 style="text-align: center">There are Users!</h4>
+    {% else %}
+        {% for user in users %}
+            <p class="id">Id: {{user.username}}</p>
+            <p class="name">Name : {{user.Name}}</p>
+            <p class="role">Role: {{user.role}}</p>
+            <br>
+        {% endfor %}
+    {% endif %}
+</div>
+{% endblock %}
