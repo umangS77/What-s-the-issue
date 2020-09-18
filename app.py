@@ -12,7 +12,7 @@ from pprint import pprint
 app = Flask(__name__)
 
 app.secret_key = os.urandom(24)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///issues.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 # app.config['SQLALCHEMY_BINDS'] = {'usersdb' : 'sqlite:///usersdb.db'}
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
@@ -39,7 +39,6 @@ class ISSUES(db.Model):
 		return '<Issue %r>' % self.id
 
 class USERS(db.Model):
-	# __bind_key__ = 'usersdb'
 	id = db.Column(db.Integer, primary_key=True)
 	username = 'aa'
 	Name = 'aa'
@@ -78,7 +77,7 @@ def homepage():
 	return render_template('/homepage.html',
 		username = current_owner,
 		Name = current_name,
-		role = user.role, 
+		# role = user.role, 
 		issues = issues)
 
 @app.route('/myissues')
@@ -91,7 +90,9 @@ def myissues():
 	# if(x==0):
 	# 	return redirect('/')
 	return render_template('/myissues.html',username = current_owner,
-		Name = current_name,role = user.role, myissues = myissues)
+		Name = current_name,
+		# role = user.role,
+		myissues = myissues)
 
 @app.route('/addissue', methods=['GET','POST'])
 def addissue():
@@ -119,7 +120,7 @@ def addissue():
 		return render_template('/addissue.html',
 		username = current_owner,
 		Name = current_name,
-		role = user.role,
+		# role = user.role,
 		)
 
 @app.route('/update/<int:id>', methods = ['GET','POST'])
@@ -144,7 +145,9 @@ def update(id):
 
 	else:
 		return render_template('update.html',username = current_owner,
-		Name = current_name,role = user.role, issue = issue)
+		Name = current_name,
+		# role = user.role,
+		issue = issue)
 
 
 @app.route('/delete/<int:id>')
