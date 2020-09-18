@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>What's your Issue?</title>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h3>Profile: {{username}}</h3>
+    <h3>Name: {{Name}}</h3>
+    <br><hr><br>
+    <h1 style="text-align: center">My Issues: </h1>
+    {% if myissues|length < 1 %}
+    <h4 style="text-align: center">You have  no issues. Create one!</h4>
+    <a href="{{ url_for('addissue') }}"><button style="background-color: green">Edit this issue</button></a>
+    {% else %}
+        {% for issue in myissues %}
+            <p class="title">Title: {{issue.title}}</p>
+            <p class="description">Description: {{issue.description}}</p>
+            <p class="gitlink">Git-link: {{issue.gitlink}}</p>
+            <p class="state">State: {{issue.state}}</p>
+            <p class="tags">Tags: {{issue.tags}}</p>
+            <p class="assignees">Assignees: {{issue.assignees}}</p>
+            <p class="date">Date created: {{issue.date_created.date()}}</p>
+            <br>
+            <a href="/update/{{issue.id}}"><button style="background-color: green">Edit this issue</button></a><br>
+            <a href="/delete/{{issue.id}}"><button style="background-color: orange">Delete this issue</button></a>
+        {% endfor %}
+    {% endif %}
+</div>
+{% endblock %}
