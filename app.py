@@ -1,4 +1,5 @@
-from flask import Flask, current_app, render_template, url_for, request, redirect, flash
+from flask import Flask, current_app, render_template, url_for, request, redirect, flash , session
+from sqlalchemy.dialects.postgresql import ARRAY
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 # from models import db, ISSUES, USERS
@@ -29,7 +30,7 @@ class ISSUES(db.Model):
 	title = db.Column(db.String(100), nullable=False)
 	description = db.Column(db.String(200), nullable=False)
 	state = db.Column(db.String(100), nullable=False)
-	tags = db.Column(db.String(200), nullable=False)
+	tags = db.Column(db.String(100), nullable=False)
 	assignees = db.Column(db.String(200), nullable=True)
 	owner = db.Column(db.String(100), nullable=False)
 	gitlink = db.Column(db.String(100), nullable=False)
@@ -52,11 +53,13 @@ class USERS(db.Model):
 @app.route('/')
 @login_required
 def loginpage():
-	global current_owner
-	global current_name 
-	current_owner = cas.username
-	current_name = cas.attributes['cas:Name']
-	user = USERS.query.filter_by(username = current_owner).all()
+	# global current_owner
+	# global current_name 
+	# current_owner = cas.username
+	# current_name = cas.attributes['cas:Name']
+	session["username"] = cas.username
+	session["Name"] = cas.attributes['cas:Name']
+	user = USERS.query.filter_by(username = session["username"]).all()
 	if(user == None):
 		# new_user = USERS(username = current_owner, Name=current_name, Role='VIEWER')
 		# try:
@@ -65,13 +68,15 @@ def loginpage():
 		# except:
 		# 	return 'Error is adding user'
 		pass
+	# session["role"] = user.role
 	return redirect('/homepage')
 
 
 @app.route('/homepage', methods = ['GET','POST'])
 def homepage():
-	current_owner = cas.username
-	current_name = cas.username
+	# if "user" in session:
+	current_owner = session["username"]
+	current_name = session["Name"]
 	issues = ISSUES.query.order_by(ISSUES.date_created).all()
 	user = USERS.query.filter_by(username = current_owner).all()
 	return render_template('/homepage.html',
@@ -79,11 +84,14 @@ def homepage():
 		Name = current_name,
 		# role = user.role, 
 		issues = issues)
+	# else:
+	# 	return redirect('/')
 
 @app.route('/myissues')
 def myissues():
-	current_owner = cas.username
-	current_name = cas.username
+	# if "user" in session:
+	current_owner = session["username"]
+	current_name = session["Name"]
 	user = USERS.query.filter_by(username = current_owner).all()
 	myissues = ISSUES.query.filter_by(owner = current_owner).all()
 	# x=dir().count('current_owner')
@@ -93,17 +101,23 @@ def myissues():
 		Name = current_name,
 		# role = user.role,
 		myissues = myissues)
+	# else:
+	# 	return redirect('/')
 
 @app.route('/addissue', methods=['GET','POST'])
 def addissue():
-	current_owner = cas.username
-	current_name = cas.username
+	# if "user" in session:
+	current_owner = session["username"]
+	current_name = session["Name"]
 	user = USERS.query.filter_by(username = current_owner).all()
 	if request.method == 'POST':
 		issue_title = request.form['title']
 		issue_description = request.form['description']
 		issue_state = request.form['state']
-		issue_tags = request.form['tags']
+		issue_tag_list = request.form.getlist('tags')
+		issue_tags=','.join(issue_tag_list)
+		# for tag in issue_tag_list:
+		# 	issue_tags = issue_tags + "," + tag
 		issue_gitlink = request.form['gitlink']
 		issue_owner = current_owner
 	# issue_assignees = request.form['assignees']
@@ -122,18 +136,24 @@ def addissue():
 		Name = current_name,
 		# role = user.role,
 		)
+	# else:
+	# 	return redirect('/')
 
 @app.route('/update/<int:id>', methods = ['GET','POST'])
 def update(id):
-	current_owner = cas.username
-	current_name = cas.username
+	# if "user" in session:
+	current_owner = session["username"]
+	current_name = session["Name"]
 	user = USERS.query.filter_by(username = current_owner).all()
 	issue = ISSUES.query.get_or_404(id)
 	if request.method == 'POST':
 		issue.title = request.form['title']
 		issue.description = request.form['description']
 		issue.state = request.form['state']
-		issue.tags = request.form['tags']
+		issue_tag_list = request.form.getlist('tags')
+		issue_tags=','.join(issue_tag_list)
+		# for tag in issue_tag_list:
+		# 	issue_tags = issue_tags + "," + tag
 		issue.gitlink = request.form['gitlink']
 		issue.owner = current_owner
 
@@ -148,7 +168,8 @@ def update(id):
 		Name = current_name,
 		# role = user.role,
 		issue = issue)
-
+	# else:
+	# 	return redirect('/')
 
 @app.route('/delete/<int:id>')
 def delete(id):
@@ -157,7 +178,7 @@ def delete(id):
     try:
         db.session.delete(issue_to_delete)
         db.session.commit()
-        return redirect('/')
+        return redirect('/myissues')
     except:
         return 'There was a problem deleting that issue'
 if __name__ == "__main__":
