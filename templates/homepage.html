@@ -14,8 +14,8 @@
     <br>
     <a href = "{{url_for('logoutpage')}}">Logout</a>
     <br>
-    <a href="{{ url_for('addissue') }}"><button type="button" style="background-color: yellow">Add new issue?</button></a><br>
-    <a href="{{ url_for('myissues') }}"><button type="button" style="background-color: green">See your issue?</button></a>
+    <!-- <a href="{{ url_for('addissue') }}"><button type="button" style="background-color: yellow">Add new issue?</button></a><br>
+ -->    <a href="{{ url_for('myissues') }}"><button type="button" style="background-color: green">See your issue?</button></a>
     <hr><br>
 <!--     <p>{{url_for('addissue')}}</p> -->
     <br><hr>
@@ -29,6 +29,7 @@
             <p class="gitlink">Git-link: {{issue.gitlink}}</p>
             <p class="state">State: {{issue.state}}</p>
             <p class="tags">Tags: {{issue.tags}}</p>
+            <p class="assignees">Tags: {{issue.assignees}}</p>
             <p class="date">Date created: {{issue.date_created.date()}}</p>
             <br>
         {% endfor %}

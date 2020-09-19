@@ -18,22 +18,32 @@
             <input type="text" name="title" id="title">
             <input type="text" name="description" id="description">
             <input type="text" name="gitlink" id="gitlink">
-
-            <select name="state" id="state" value="Open">
+            <br>
+            <label for="state">State of the issue:</label>
+            <select name="state" id="state">
               <option value="Open">Open</option>
               <option value="Assigned">Assigned</option>
               <option value="Fixed">Fixed</option>
               <option value="Abandoned">Abandoned</option>
             </select>
-
-
-            	<input type="checkbox" name="tags" value="Good First Issue">Good First Issue</input>
-            	<input type="checkbox" name="tags" value="Dependies">Dependies</input>
-            	<input type="checkbox" name="tags" value="Enhancement">Enhancement</input>
-            	<input type="checkbox" name="tags" value="Bug">Bug</input>
-            	<input type="checkbox" name="tags" value="Goals">Goals</input>
-            	<input type="checkbox" name="tags" value="Javascript">Javascript</input>
-            	<input type="checkbox" name="tags" value="New">New</input>
+            <br>
+<!--             <label for="tags">Tags:</label>
+        	<input type="checkbox" name="tags" value="Good First Issue">Good First Issue</input>
+        	<input type="checkbox" name="tags" value="Dependies">Dependies</input>
+        	<input type="checkbox" name="tags" value="Enhancement">Enhancement</input>
+        	<input type="checkbox" name="tags" value="Bug">Bug</input>
+        	<input type="checkbox" name="tags" value="Goals">Goals</input>
+        	<input type="checkbox" name="tags" value="Javascript">Javascript</input>
+        	<input type="checkbox" name="tags" value="New">New</input>
+            <br> -->
+            <input type="text" name="tags" placeholder="Enter tags separated by comma">
+            <br>
+            <label for="assignees">Assignees:</label>
+            <select name = "assignees" id = "assignees" multiple>
+            {% for assignee in list_of_assignees %}
+            <option value="{{assignee.username}}">{{assignee.username}}</option>
+            {% endfor %}
+            </select>
 
             <input type="submit" value="Add issue">
         </form>

@@ -35,7 +35,7 @@ class ISSUES(db.Model):
 	owner = db.Column(db.String(100), nullable=False)
 	gitlink = db.Column(db.String(100), nullable=False)
 	date_created = db.Column(db.DateTime, default=datetime.utcnow)
-
+	assignees = db.Column(db.String(1000), nullable = True)
 	def __repr__(self):
 		return '<Issue %r>' % self.id
 
@@ -109,21 +109,27 @@ def addissue():
 	current_name = session["Name"]
 	current_role = session["role"]
 	user = USERS.query.filter_by(username = current_owner).all()
-
+	assigneeslist = USERS.query.filter_by(role = 'VIEWER').all()
 	if request.method == 'POST':
 		issue_title = request.form['title']
 		issue_description = request.form['description']
 		issue_state = request.form['state']
-		issue_tag_list = request.form.getlist('tags')
-		issue_tags=','.join(issue_tag_list)
+		# issue_tag_list = request.form.getlist('tags')
+		# issue_tags=','.join(issue_tag_list)
+		issue_tags=request.form['tags']
+		issue_assignee_list = request.form.getlist('assignees')
+		issue_assignees = ','.join(issue_assignee_list)
 		issue_gitlink = request.form['gitlink']
 		issue_owner = current_owner
+		print(issue_assignees)
 		new_issue = ISSUES(title=issue_title, 
 			description=issue_description, 
 			state=issue_state, 
 			tags=issue_tags,
 			gitlink=issue_gitlink, 
-			owner = issue_owner)
+			owner = issue_owner,
+			assignees = issue_assignees,
+			)
 
 		try:
 			db.session.add(new_issue)
@@ -137,6 +143,7 @@ def addissue():
 		username = current_owner,
 		Name = current_name,
 		Role = current_role,
+		list_of_assignees = assigneeslist
 		)
 
 @app.route('/update/<int:id>', methods = ['GET','POST'])
@@ -146,13 +153,16 @@ def update(id):
 	current_role = session["role"]
 	user = USERS.query.filter_by(username = current_owner).all()
 	issue = ISSUES.query.get_or_404(id)
-
+	assigneeslist = USERS.query.filter_by(role = 'VIEWER').all()
 	if request.method == 'POST':
 		issue.title = request.form['title']
 		issue.description = request.form['description']
 		issue.state = request.form['state']
-		issue_tag_list = request.form.getlist('tags')
-		issue_tags=','.join(issue_tag_list)
+		# issue_tag_list = request.form.getlist('tags')
+		# issue_tags=','.join(issue_tag_list)
+		issue_tags=request.form['tags']
+		issue_assignee_list = request.form.getlist('assignees')
+		issue.assignees = '\n'.join(issue_assignee_list)
 		issue.gitlink = request.form['gitlink']
 		issue.owner = current_owner
 
@@ -166,7 +176,9 @@ def update(id):
 		return render_template('update.html',username = current_owner,
 		Name = current_name,
 		Role = current_role,
-		issue = issue)
+		issue = issue,
+		list_of_assignees = assigneeslist
+		)
 
 
 @app.route('/delete/<int:id>')
