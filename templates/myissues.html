@@ -13,7 +13,7 @@
     <a href = "{{url_for('logoutpage')}}">Logout</a>
     {% if Role == "VIEWER" %}
         <br>
-        <a href="{{ url_for('addissue') }}"><button style="background-color: yellow">Create an issue</button></a>
+<!--         <a href="{{ url_for('addissue') }}"><button style="background-color: yellow">Create an issue</button></a> -->
     {% else %}
         <a href="{{ url_for('addissue') }}"><button style="background-color: yellow">Create an issue</button></a>
     {% endif %}

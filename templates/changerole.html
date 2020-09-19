@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>All users</title>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h3>Profile: {{username}}</h3>
+    <h3>Name: {{Name}}</h3>
+    <h3>Role: {{Role}}</h3>
+    <a href = "{{url_for('homepage')}}">Go to homepage</a>
+    <br>
+    <a href = "{{url_for('logoutpage')}}">Logout</a>
+    <br>
+    <hr><br>
+    <p class="id">Id: {{user.username}}</p>
+    <p class="name">Name : {{user.Name}}</p>
+    <p class="role">Current Role: {{user.role}}</p>
+    <br>
+
+
+    <div class="form">
+        <form action="/changerole/{{user.id}}" method="POST">
+            <label for="role">Role of the User</label>
+            <select name="role" id="role">
+              <option value="VIEWER">VIEWER</option>
+              <option value="EDITOR">EDITOR</option>
+              <option value="ADMIN">ADMIN</option>
+            </select>
+            <input type="submit" value="Save Role">
+        </form>
+    </div>
+</div>
+{% endblock %}

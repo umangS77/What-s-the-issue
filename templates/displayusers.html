@@ -25,6 +25,10 @@
             <p class="id">Id: {{user.username}}</p>
             <p class="name">Name : {{user.Name}}</p>
             <p class="role">Role: {{user.role}}</p>
+            {% if Role == 'ADMIN' %}
+                <a href = "changerole/{{user.id}}">Change Role?</a>
+                <br>
+            {% endif %}
             <br>
         {% endfor %}
     {% endif %}
