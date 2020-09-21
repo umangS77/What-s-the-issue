@@ -21,34 +21,31 @@
             <input class="inputbox" type="text" name="title" id="title" placeholder="Title"><br>
             <input class="inputbox" type="text" name="description" id="description" placeholder="Description"><br>
             <input class="inputbox" type="text" name="gitlink" id="gitlink" placeholder="Github-link"><br>
-            <!--             <label for="tags">Tags:</label>
-        	<input type="checkbox" name="tags" value="Good First Issue">Good First Issue</input>
-        	<input type="checkbox" name="tags" value="Dependies">Dependies</input>
-        	<input type="checkbox" name="tags" value="Enhancement">Enhancement</input>
-        	<input type="checkbox" name="tags" value="Bug">Bug</input>
-        	<input type="checkbox" name="tags" value="Goals">Goals</input>
-        	<input type="checkbox" name="tags" value="Javascript">Javascript</input>
-        	<input type="checkbox" name="tags" value="New">New</input>
-            <br> -->
             <input class="inputbox" type="text" name="tags" placeholder="Enter tags separated by comma">
             <br>
-            <label for="state">State of the issue:</label>
-            <select name="state" id="state">
-              <option value="Open">Open</option>
+            <div  style="text-align: center;">
+                <p style="text-align: center; font-size: 20px; font-family: 'Baumans'">State of the issue:</p>
+             <select name="state" id="state" placeholder="State" style="height: 30px; width: 120px; font-size: 15px">
+              <option value="Open" selected>Open</option>
               <option value="Assigned">Assigned</option>
               <option value="Fixed">Fixed</option>
               <option value="Abandoned">Abandoned</option>
             </select>
             <br>
+            <br>
 
-            <label for="assignees">Assignees:</label>
-            <select name = "assignees" id = "assignees" multiple>
+            <p style="text-align: center; font-size: 20px; font-family: 'Baumans'">Assignees:(Can be none or one or multiple)</p>
+            <select name = "assignees" id = "assignees" multiple style="font-size: 15px">
+            <br>
             {% for assignee in list_of_assignees %}
             <option value="{{assignee.username}}">{{assignee.username}}</option>
             {% endfor %}
             </select>
+            <br>
+            <br>
 
-            <input type="submit" value="Add issue">
+            <input style="margin: 0 auto;background-color: orange; font-size: 18px;" type="submit" value="Add issue">
+        </div>
         </form>
     </div>
     </div>

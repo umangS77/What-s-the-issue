@@ -30,10 +30,10 @@ class ISSUES(db.Model):
 	title = db.Column(db.String(100), nullable=False)
 	description = db.Column(db.String(200), nullable=False)
 	state = db.Column(db.String(100), nullable=False)
-	tags = db.Column(db.String(100), nullable=False)
+	tags = db.Column(db.String(100), nullable=True)
 	assignees = db.Column(db.String(200), nullable=True)
 	owner = db.Column(db.String(100), nullable=False)
-	gitlink = db.Column(db.String(100), nullable=False)
+	gitlink = db.Column(db.String(100), nullable=True)
 	date_created = db.Column(db.DateTime, default=datetime.utcnow)
 	assignees = db.Column(db.String(1000), nullable = True)
 	def __repr__(self):
@@ -240,6 +240,7 @@ def displayusers():
 @app.route('/changerole/<int:id>', methods = ['GET','POST'])
 def changerole(id):
 	user = USERS.query.get_or_404(id)
+	allusers = USERS.query.order_by(USERS.username).all()
 	if request.method == 'POST':
 		user.role = request.form['role']
 		try:
@@ -248,10 +249,10 @@ def changerole(id):
 		except:
 			return 'There was a problem in changing role'
 	else:
-		return render_template('changerole.html',username = session["username"],
+		return render_template('displayusers.html',username = session["username"],
 		Name = session["Name"],
 		Role = session["role"],
-		user = user)
+		users = alluser)
 
 @app.route('/logout')
 def logoutpage():

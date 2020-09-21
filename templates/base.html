@@ -12,9 +12,7 @@
     	<div class="navbar">
         <div class="topNaviagationLink"><a href="{{url_for('homepage')}}">Home</a></div>
         <div class="topNaviagationLink"><a href="{{url_for('displayusers')}}">See all Users</a></div>
-        {% if Role != 'VIEWER'%}
         <div class="topNaviagationLink"><a href="{{ url_for('myissues') }}">See your Issues</a></div>
-        {% endif %}
         <div class="topNaviagationLink"><a href="{{url_for('logoutpage')}}">Logout</a></div>
     	</div>
 	</div>

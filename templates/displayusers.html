@@ -29,18 +29,32 @@
                     <h4 class="name">Name : {{user.Name}}</h4>
                     <h4 class="role">Role: {{user.role}}</h4>
                     {% if Role == 'ADMIN' %}
-                    <p><a href = "changerole/{{user.id}}"><button class="button">Change Role?</button></a></p>
+                 <form action="/changerole/{{user.id}}" method="POST">
+                    <br>
+                        <p>Change Role?&nbsp;
+                        <select name="role" id="role" value="{{user.role}}">
+                            {% if user.role == 'VIEWER'%}
+                                <option value="VIEWER" selected>VIEWER</option>
+                            {% else %}
+                                <option value="VIEWER">VIEWER</option>
+                            {% endif %}
+                            {% if user.role == 'EDITOR'%}
+                                <option value="EDITOR" selected>EDITOR</option>
+                            {% else %}
+                                <option value="EDITOR">EDITOR</option>
+                            {% endif %}
+                            {% if user.role == 'ADMIN'%}
+                                <option value="ADMIN" selected>ADMIN</option>
+                            {% else %}
+                                <option value="ADMIN">ADMIN</option>
+                            {% endif %}
+                        </select>
+                        <button>Save</button>
+                    </p>
+                    </form>
                     {% endif %}
                 </div>
-            </div>
-<!--             <p class="id">Id: {{user.username}}</p>
-            <p class="name">Name : {{user.Name}}</p>
-            <p class="role">Role: {{user.role}}</p>
-            {% if Role == 'ADMIN' %}
-                <a href = "changerole/{{user.id}}">Change Role?</a>
-                <br>
-            {% endif %}
- -->            
+            </div>           
             <br>
         {% endfor %}
     {% endif %}

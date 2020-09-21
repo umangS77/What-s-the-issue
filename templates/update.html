@@ -9,8 +9,8 @@
 <div class="content">
     <div id="mainPicture">
         <div class="picture">
-            <div id="headerTitle">{{Name}}</div>
-            <div id="headerTitle">{{username}}</div>
+            <div id="headerTitle">Name: {{Name}}</div>
+            <div id="headerTitle">Id: {{username}}</div>
             <div id="headerTitle">Current Role: {{Role}}</div>
         </div>
     </div>
@@ -22,30 +22,48 @@
             <input class="inputbox" type="text" name="gitlink" id="gitlink" value="{{issue.gitlink}}"><br>
             <input class="inputbox" type="text" name="tags" value="{{issue.tags}}" placeholder="Enter tags separated by comma">
             <br>
-            <select name="state" id="state">
+            <div  style="text-align: center;">
+            <p style="text-align: center; font-size: 20px; font-family: 'Baumans'">State of the issue:</p>
+             <select name="state" id="state" placeholder="State" style="height: 30px; width: 120px; font-size: 15px">
+              {% if issue.state == 'Open' %}
+              <option value="Open" selected>Open</option>
+              {% else %}
               <option value="Open">Open</option>
+              {% endif %}
+
+              {% if issue.state == 'Assigned' %}
+              <option value="Assigned" selected>Assigned</option>
+              {% else %}
               <option value="Assigned">Assigned</option>
+              {% endif %}
+
+              {% if issue.state == 'Fixed' %}
+              <option value="Fixed" selected>Fixed</option>
+              {% else %}
               <option value="Fixed">Fixed</option>
+              {% endif %}
+
+              {% if issue.state == 'Abandoned' %}
+              <option value="Abandoned" selected>Abandoned</option>
+              {% else %}
               <option value="Abandoned">Abandoned</option>
+              {% endif %}
             </select>
             <br>
-<!--             <input type="checkbox" name="tags" value="Good First Issue">Good First Issue</input>
-            <input type="checkbox" name="tags" value="Dependies">Dependies</input>
-            <input type="checkbox" name="tags" value="Enhancement">Enhancement</input>
-            <input type="checkbox" name="tags" value="Bug">Bug</input>
-            <input type="checkbox" name="tags" value="Goals">Goals</input>
-            <input type="checkbox" name="tags" value="Javascript">Javascript</input>
-            <input type="checkbox" name="tags" value="New">New</input> -->
+            <br>
 
-            <label for="assignees">Assignees:</label>
-            <select name = "assignees" id = "assignees" multiple>
-                <br>
+            <p style="text-align: center; font-size: 20px; font-family: 'Baumans'">Assignees:(Can be none or one or multiple)</p>
+            <select name = "assignees" id = "assignees" multiple style="font-size: 15px">
+            <br>
             {% for assignee in list_of_assignees %}
             <option value="{{assignee.username}}">{{assignee.username}}</option>
             {% endfor %}
             </select>
+            <br>
+            <br>
 
-            <input type="submit" value="Edit issue">
+            <input style="margin: 0 auto;background-color: cyan; font-size: 18px;" type="submit" value="Edit issue">
+        </div>
         </form>
     </div>
 </div>

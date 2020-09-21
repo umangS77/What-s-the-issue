@@ -52,7 +52,7 @@
                         <p> {{issue.description}}</p>
                         <br>
                         <p>
-                            <a href="{{issue.gitlink}}" class="gitlink">Click here to visit this issue on github.</a>
+                            <a href="{{ ''.join(['http://', issue.gitlink]) }}" class="gitlink">Click here to visit this issue on github.</a>
                         
                         {% if Role != 'VIEWER'%}
                             <a href="/update/{{issue.id}}"><button class="button">Edit this issue</button></a>
@@ -66,15 +66,4 @@
             </div>
         {% endfor %}
     {% endif %}
-
-<!--     <div class="form">
-        <form action="/addissue" method="POST">
-            <input type="text" name="title" id="title">
-            <input type="text" name="description" id="description">
-            <input type="text" name="gitlink" id="gitlink">
-            <input type="text" name="state" id="state">
-            <input type="text" name="tags" id="tags">
-            <input type="submit" value="Add issue">
-        </form>
-    </div> -->
 {% endblock %}

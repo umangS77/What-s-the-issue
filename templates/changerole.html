@@ -8,19 +8,22 @@
 <div class="content">
     <div id="mainPicture">
         <div class="picture">
-            <div id="headerTitle">{{Name}}</div>
-            <div id="headerTitle">{{username}}</div>
+            <div id="headerTitle">Name: {{Name}}</div>
+            <div id="headerTitle">Id: {{username}}</div>
             <div id="headerTitle">Current Role: {{Role}}</div>
         </div>
-    </div>
+    </div><br>
     <hr><br>
+    <h1 style="text-align: center;">USER Details:</h1>
+    <br>
+    <div style="text-align: center;font-size: 20px;">
     <p class="id">Id: {{user.username}}</p>
     <p class="name">Name : {{user.Name}}</p>
     <p class="role">Current Role: {{user.role}}</p>
     <br>
 
 
-    <div class="form">
+    
         <form action="/changerole/{{user.id}}" method="POST">
             <label for="role">Role of the User</label>
             <select name="role" id="role">
