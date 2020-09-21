@@ -65,8 +65,6 @@ def loginpage():
 		temprole = 'VIEWER'
 		if(current_owner == 'umang.srivastava@students.iiit.ac.in'):
 			temprole = 'ADMIN'
-		elif(current_owner == 'yash.amin@students.iiit.ac.in'):
-			temprole = 'EDITOR'
 		new_user = USERS(username = current_owner,
 			Name=current_name,
 			role=temprole)
