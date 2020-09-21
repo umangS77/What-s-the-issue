@@ -51,7 +51,7 @@ class USERS(db.Model):
 
 @app.route('/')
 def login():
-    return flask.redirect(flask.url_for('cas.login', _external=True))
+	return flask.redirect(flask.url_for('cas.login', _external=True))
 
 @app.route('/loginpage')
 def loginpage():
@@ -188,14 +188,46 @@ def update(id):
 
 @app.route('/delete/<int:id>')
 def delete(id):
-    issue_to_delete = ISSUES.query.get_or_404(id)
+	issue_to_delete = ISSUES.query.get_or_404(id)
 
-    try:
-        db.session.delete(issue_to_delete)
-        db.session.commit()
-        return redirect('/myissues')
-    except:
-        return 'There was a problem deleting that issue'
+	try:
+		db.session.delete(issue_to_delete)
+		db.session.commit()
+		return redirect('/myissues')
+	except:
+		return 'There was a problem deleting that issue'
+
+
+@app.route('/search', methods=['GET'])
+def search():
+	current_owner = session["username"]
+	current_name = session["Name"]
+	current_role = session["role"]
+	issues = ISSUES.query.order_by(ISSUES.title).all()
+	search_key = request.args.get('search_key')
+	# print(search_key)
+	try:
+		# print("CCCCCC")
+		all_issues = ISSUES.query.filter(
+			(ISSUES.owner.contains(search_key)) | 
+			(ISSUES.title.contains(search_key)) |
+			(ISSUES.tags.contains(search_key)) |
+			(ISSUES.assignees.contains(search_key))
+			).order_by(ISSUES.title).all()
+		# print("AAAAA")
+		return render_template('/homepage.html',
+		username = current_owner,
+		Name = current_name,
+		Role = current_role,
+		issues = all_issues)
+	except:
+		# print("BBBBB")
+		return render_template('/homepage.html',
+		username = current_owner,
+		Name = current_name,
+		Role = current_role,
+		issues = issues)
+
 
 @app.route('/displayusers')
 def displayusers():

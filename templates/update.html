@@ -7,26 +7,28 @@
 
 {% block body %}
 <div class="content">
-    <h3>Profile: {{username}}</h3>
-    <h3>Name: {{Name}}</h3>
-    <h3>Role: {{Role}}</h3>
-    <a href = "{{url_for('homepage')}}">Go to homepage</a><br>
-    <a href = "{{url_for('logoutpage')}}">Logout</a>
+    <div id="mainPicture">
+        <div class="picture">
+            <div id="headerTitle">{{Name}}</div>
+            <div id="headerTitle">{{username}}</div>
+            <div id="headerTitle">Current Role: {{Role}}</div>
+        </div>
+    </div>
     <br><hr><br>
     <div class="form">
         <form action="/update/{{issue.id}}" method="POST">
-            <input type="text" name="title" id="title" value="{{issue.title}}">
-            <input type="text" name="description" id="description" value="{{issue.description}}">
-            <input type="text" name="gitlink" id="gitlink" value="{{issue.gitlink}}">
-
+            <input class="inputbox" type="text" name="title" id="title" value="{{issue.title}}"><br>
+            <input class="inputbox" type="text" name="description" id="description" value="{{issue.description}}"><br>
+            <input class="inputbox" type="text" name="gitlink" id="gitlink" value="{{issue.gitlink}}"><br>
+            <input class="inputbox" type="text" name="tags" value="{{issue.tags}}" placeholder="Enter tags separated by comma">
+            <br>
             <select name="state" id="state">
               <option value="Open">Open</option>
               <option value="Assigned">Assigned</option>
               <option value="Fixed">Fixed</option>
               <option value="Abandoned">Abandoned</option>
             </select>
-
-            <label>Tags: </label><br>
+            <br>
 <!--             <input type="checkbox" name="tags" value="Good First Issue">Good First Issue</input>
             <input type="checkbox" name="tags" value="Dependies">Dependies</input>
             <input type="checkbox" name="tags" value="Enhancement">Enhancement</input>
@@ -34,10 +36,10 @@
             <input type="checkbox" name="tags" value="Goals">Goals</input>
             <input type="checkbox" name="tags" value="Javascript">Javascript</input>
             <input type="checkbox" name="tags" value="New">New</input> -->
-            <input type="text" name="tags" value="{{issue.tags}}" placeholder="Enter tags separated by comma">
-            <br>
+
             <label for="assignees">Assignees:</label>
             <select name = "assignees" id = "assignees" multiple>
+                <br>
             {% for assignee in list_of_assignees %}
             <option value="{{assignee.username}}">{{assignee.username}}</option>
             {% endfor %}

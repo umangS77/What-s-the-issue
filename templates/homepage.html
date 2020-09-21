@@ -6,40 +6,64 @@
 
 
 {% block body %}
-<div class="content">
-    <h3>Profile: {{username}}</h3>
-    <h3>Name: {{Name}}</h3>
-    <h3>Role: {{Role}}</h3>
-    <a href = "{{url_for('displayusers')}}">Show all users</a>
+
+<!--     <a href = "{{url_for('displayusers')}}">Show all users</a>
     <br>
     <a href = "{{url_for('logoutpage')}}">Logout</a>
     <br>
-    <!-- <a href="{{ url_for('addissue') }}"><button type="button" style="background-color: yellow">Add new issue?</button></a><br>
- -->
     {% if Role != 'VIEWER'%}    
     <a href="{{ url_for('myissues') }}"><button type="button" style="background-color: green">See your issue?</button></a>
     {% endif%}
     <hr><br>
-<!--     <p>{{url_for('addissue')}}</p> -->
-    <br><hr>
-    <h1 style="text-align: center">Issues: </h1>
+    <p>{{url_for('addissue')}}</p> -->
+    <div id="mainPicture">
+        <div class="picture">
+            <div id="headerTitle">Name: {{Name}}</div>
+            <div id="headerTitle">Id: {{username}}</div>
+            <div id="headerTitle">Current Role: {{Role}}</div>
+        </div>
+    </div>
+    <br>
+    <hr>
+    <br>
+    <form action="{{ url_for('search') }}" method="GET">
+          <input class="inputbox" type="text" name="search_key" placeholder="Search issue by Title or Tags or Creator-Id or Assignees">
+        <div class="contentBox innerBox" style="background-color: rgba(0,0,0,0);">
+        <button type="submit" class="button searchbut">Search</button>
+        </div>
+    </form>
+    <h1 style="text-align: center">Issues: </ h1> 
     {% if issues|length < 1 %}
     <h4 style="text-align: center">There are no issues. Create one!</h4>
     {% else %}
         {% for issue in issues %}
-            <p class="title">Title: {{issue.title}}</p>
-            <p class="description">Description: {{issue.description}}</p>
-            <p class="owner">Owner: {{issue.owner}}</p>
-            <p class="gitlink">Git-link: {{issue.gitlink}}</p>
-            <p class="state">State: {{issue.state}}</p>
-            <p class="tags">Tags: {{issue.tags}}</p>
-            <p class="assignees">Assignees: {{issue.assignees}}</p>
-            <p class="date">Date created: {{issue.date_created.date()}}</p>
-            <br>
-            {% if Role != 'VIEWER'%}
-            <a href="/update/{{issue.id}}"><button style="background-color: green">Edit this issue</button></a>
-            <br><br>
-            {% endif %}
+
+            <div class="contentBox">
+                <div class="innerBox">
+                    <h1> {{issue.title}}</h1>
+                    <h4 class="tags"> Tags: {{issue.tags}}</h4>
+                    <h4 class="state">State: {{issue.state}}</h4>
+                    <h4> By: {{issue.owner}}</h4>
+                    <h4> Date Created: {{issue.date_created.date()}}</h4>
+                    <h4 class="assignees">Assignees: {{issue.assignees}}</h4>
+                    <br>
+                    <div class="contentText" style="font-size: 22px">
+                        <h4>About this issue:</h4>
+                        <p> {{issue.description}}</p>
+                        <br>
+                        <p>
+                            <a href="{{issue.gitlink}}" class="gitlink">Click here to visit this issue on github.</a>
+                        
+                        {% if Role != 'VIEWER'%}
+                            <a href="/update/{{issue.id}}"><button class="button">Edit this issue</button></a>
+                            <br><br>
+                            {% endif %}
+
+                        </p>
+                    </div>
+                    
+                </div>
+            </div>
         {% endfor %}
     {% endif %}
 
@@ -53,5 +77,4 @@
             <input type="submit" value="Add issue">
         </form>
     </div> -->
-</div>
 {% endblock %}

@@ -7,17 +7,30 @@
 
 {% block body %}
 <div class="content">
-    <h3>Profile: {{username}}</h3>
-    <h3>Name: {{Name}}</h3>
-    <h3>Role: {{Role}}</h3>
-    <a href = "{{url_for('homepage')}}">Go to homepage</a>
-    <br><a href = "{{url_for('logoutpage')}}">Logout</a><br>
+    <div id="mainPicture">
+        <div class="picture">
+            <div id="headerTitle">{{Name}}</div>
+            <div id="headerTitle">{{username}}</div>
+            <div id="headerTitle">Current Role: {{Role}}</div>
+        </div>
+    </div>
     <hr><br>
+    <div class="picture">
     <div class="form">
         <form action="{{url_for('addissue')}}" method="POST">
-            <input type="text" name="title" id="title">
-            <input type="text" name="description" id="description">
-            <input type="text" name="gitlink" id="gitlink">
+            <input class="inputbox" type="text" name="title" id="title" placeholder="Title"><br>
+            <input class="inputbox" type="text" name="description" id="description" placeholder="Description"><br>
+            <input class="inputbox" type="text" name="gitlink" id="gitlink" placeholder="Github-link"><br>
+            <!--             <label for="tags">Tags:</label>
+        	<input type="checkbox" name="tags" value="Good First Issue">Good First Issue</input>
+        	<input type="checkbox" name="tags" value="Dependies">Dependies</input>
+        	<input type="checkbox" name="tags" value="Enhancement">Enhancement</input>
+        	<input type="checkbox" name="tags" value="Bug">Bug</input>
+        	<input type="checkbox" name="tags" value="Goals">Goals</input>
+        	<input type="checkbox" name="tags" value="Javascript">Javascript</input>
+        	<input type="checkbox" name="tags" value="New">New</input>
+            <br> -->
+            <input class="inputbox" type="text" name="tags" placeholder="Enter tags separated by comma">
             <br>
             <label for="state">State of the issue:</label>
             <select name="state" id="state">
@@ -27,17 +40,7 @@
               <option value="Abandoned">Abandoned</option>
             </select>
             <br>
-<!--             <label for="tags">Tags:</label>
-        	<input type="checkbox" name="tags" value="Good First Issue">Good First Issue</input>
-        	<input type="checkbox" name="tags" value="Dependies">Dependies</input>
-        	<input type="checkbox" name="tags" value="Enhancement">Enhancement</input>
-        	<input type="checkbox" name="tags" value="Bug">Bug</input>
-        	<input type="checkbox" name="tags" value="Goals">Goals</input>
-        	<input type="checkbox" name="tags" value="Javascript">Javascript</input>
-        	<input type="checkbox" name="tags" value="New">New</input>
-            <br> -->
-            <input type="text" name="tags" placeholder="Enter tags separated by comma">
-            <br>
+
             <label for="assignees">Assignees:</label>
             <select name = "assignees" id = "assignees" multiple>
             {% for assignee in list_of_assignees %}
@@ -47,6 +50,7 @@
 
             <input type="submit" value="Add issue">
         </form>
+    </div>
     </div>
 </div>
 {% endblock %}

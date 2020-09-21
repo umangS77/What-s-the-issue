@@ -1,13 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-<!--     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
- -->    {% block head %}{% endblock %}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}" >
+<link href='https://fonts.googleapis.com/css?family=Baumans' rel='stylesheet'>
+<title>What's the Issue?</title>
 </head>
+
 <body>
+    <div id="page">
+    	<div class="navbar">
+        <div class="topNaviagationLink"><a href="{{url_for('homepage')}}">Home</a></div>
+        <div class="topNaviagationLink"><a href="{{url_for('displayusers')}}">See all Users</a></div>
+        {% if Role != 'VIEWER'%}
+        <div class="topNaviagationLink"><a href="{{ url_for('myissues') }}">See your Issues</a></div>
+        {% endif %}
+        <div class="topNaviagationLink"><a href="{{url_for('logoutpage')}}">Logout</a></div>
+    	</div>
+	</div>
     {% block body %}{% endblock %}
-</body>
+<!--     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" integrity="sha256-qM7QTJSlvtPSxVRjVWNM2OfTAz/3k5ovHOKmKXuYMO4=" crossorigin="anonymous"></script>
+ --></body>
 </html>
+
+
+<!-- href="{{ url_for('static', filename='css/bg2.css') }}"> -->
