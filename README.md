@@ -22,6 +22,3 @@ python3 app.py
 2.EDITOR can modify the state of the issues + the above  
 3.ADMIN can change the role of other users + the above  
 * Search filter based on any keywords is provided for issues.  
-
-## License
-[MIT](https://choosealicense.com/licenses/mit/)
