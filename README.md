@@ -1,6 +1,7 @@
 # What's the Issue?
 
-What's the issue is a flask webapp for users to post their issues, much like github.
+What's the issue is a flask webapp for users to post their issues, much like github. The webapp is deployed on heroku.  
+[Click here](https://whatstheissueapp.herokuapp.com/) to visit the webapp.  
 
 ## Installation
 
@@ -22,3 +23,8 @@ python3 app.py
 2.EDITOR can modify the state of the issues + the above  
 3.ADMIN can change the role of other users + the above  
 * Search filter based on any keywords is provided for issues.  
+
+## Note  
+If after logging in CAS, shows "Internal Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application",  
+try [https://whatstheissueapp.herokuapp.com/homepage](https://whatstheissueapp.herokuapp.com/homepage).  
+This may happen because for security reasons, long inactivity requires users to login again.
